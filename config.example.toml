@@ -15,6 +15,7 @@ host = "0.0.0.0"
 port = 8080
 read_timeout = 30
 write_timeout = 30
+max_header_bytes = 8192  # Max request header size in bytes (increase if JWT cookies are large)
 base_path = ""  # Set to "/subpath" if behind nginx proxy pass
 allowed_origins = ""  # Comma-separated CORS origins (e.g., "https://app.example.com,https://admin.example.com"). Empty = allow all (dev only).
 

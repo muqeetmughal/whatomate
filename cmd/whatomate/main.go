@@ -259,11 +259,16 @@ func runServer(args []string) {
 	setupRoutes(g, app, lo, cfg.Server.BasePath, rdb, cfg)
 
 	// Create server with CORS wrapper
+	readBufferSize := cfg.Server.ReadBufferSize
+	if readBufferSize <= 0 {
+		readBufferSize = 8192
+	}
 	server := &fasthttp.Server{
 		Handler:            corsWrapper(g.Handler(), allowedOrigins),
 		ReadTimeout:        time.Duration(cfg.Server.ReadTimeout) * time.Second,
 		WriteTimeout:       time.Duration(cfg.Server.WriteTimeout) * time.Second,
 		MaxRequestBodySize: 15 * 1024 * 1024,
+		ReadBufferSize:     readBufferSize,
 		Name:               "Whatomate",
 	}
 

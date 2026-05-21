@@ -65,8 +65,10 @@ type ServerConfig struct {
 	Port           int    `koanf:"port"`
 	ReadTimeout    int    `koanf:"read_timeout"`
 	WriteTimeout   int    `koanf:"write_timeout"`
-	BasePath       string `koanf:"base_path"`       // Base path for frontend (e.g., "/whatomate" for proxy pass)
-	AllowedOrigins string `koanf:"allowed_origins"` // Comma-separated list of allowed CORS origins
+	BasePath       string `koanf:"base_path"`        // Base path for frontend (e.g., "/whatomate" for proxy pass)
+	AllowedOrigins string `koanf:"allowed_origins"`  // Comma-separated list of allowed CORS origins
+	MaxHeaderBytes int    `koanf:"max_header_bytes"` // Max request header size in bytes (default: 8192)
+	ReadBufferSize int    `koanf:"read_buffer_size"` // Read buffer size for fasthttp server
 }
 
 type DatabaseConfig struct {
@@ -188,6 +190,9 @@ func setDefaults(cfg *Config) {
 	}
 	if cfg.Server.WriteTimeout == 0 {
 		cfg.Server.WriteTimeout = 30
+	}
+	if cfg.Server.MaxHeaderBytes == 0 {
+		cfg.Server.MaxHeaderBytes = 8192
 	}
 	if cfg.Database.Port == 0 {
 		cfg.Database.Port = 5432
